@@ -1,0 +1,49 @@
+---
+title: "Activity: Nuclear Reactors"
+author: "YOUR NAME HERE"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+
+```
+
+## Scrape the Data 
+
+```{r}
+#My code here.... 
+
+
+```
+
+
+## Your turn: In what ways is the table tidy? How is it not tidy? What’s different about it from a tidy table?
+
+My answer here..... 
+
+
+## Your Turn: Plot Net Generation Capacity vs Construction Date
+
+```{r}
+#my code here 
+
+
+```
+
+
+## Your Turn: Scrape & Clean China Data (then merge with Japan)
+
+```{r}
+#my code here... 
+
+```
+
+
+
+## Your Turn: Reconstruct Info Graphic of Japan Reactors (or other country of interest)
+
+```{r}
+#My code here
+
+```
