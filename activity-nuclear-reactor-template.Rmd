@@ -6,6 +6,7 @@ output: html_notebook
 
 ```{r}
 library(tidyverse)
+library(rvest)
 
 ```
 
@@ -14,13 +15,21 @@ library(tidyverse)
 ```{r}
 #My code here.... 
 
+page <- "https://en.wikipedia.org/wiki/List_of_commercial_nuclear_reactors"
+
+tableList <- page %>%
+  read_html() %>%
+  html_nodes(css = "table") %>%
+  html_table(fill = TRUE)
+
+head(tableList[[21]])
 
 ```
 
 
 ## Your turn: In what ways is the table tidy? How is it not tidy? What’s different about it from a tidy table?
 
-My answer here..... 
+The columns which are tidy are "Plantname", "Type", and "Capacity". "Model" and "Status" are not tidy because there are extra notes within certain cells of data. Also, "Beginbuilding" and "Commercialoperation" have multiple types of dates (month, day, and year) in only one cell. Finally, "Closed" has missing data. 
 
 
 ## Your Turn: Plot Net Generation Capacity vs Construction Date
