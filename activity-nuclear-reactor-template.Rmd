@@ -1,6 +1,6 @@
 ---
 title: "Activity: Nuclear Reactors"
-author: "YOUR NAME HERE"
+author: "Mia Iceland"
 output: html_notebook
 ---
 
@@ -17,12 +17,12 @@ library(rvest)
 
 page <- "https://en.wikipedia.org/wiki/List_of_commercial_nuclear_reactors"
 
-tableList <- page %>%
+ListofTables <- page %>%
   read_html() %>%
   html_nodes(css = "table") %>%
   html_table(fill = TRUE)
 
-head(tableList[[21]])
+Japan <- ListofTables[[21]]
 
 ```
 
@@ -37,14 +37,70 @@ The columns which are tidy are "Plantname", "Type", and "Capacity". "Model" and 
 ```{r}
 #my code here 
 
+Japan1 <-
+  Japan %>%
+  select(1:9) %>%
+  filter(row_number() > 1) %>%
+  rename(name = Plantname, 
+         reactor = `UnitNo.`,
+         model = Model,
+         status = Status, 
+         netMW = `Capacity(MW)`,
+         construction = Beginbuilding,
+         operation = Commercialoperation, 
+         closure = Closed)
+
+Japan2 <-
+  Japan1 %>%
+    mutate(Reactor = as.numeric(reactor),
+           NetMW = as.numeric(netMW),
+           Construction = lubridate::dmy(construction),
+           Operation = lubridate::dmy(operation),
+           Closure = lubridate::dmy(closure)
+           )
+
+Japan3 <-
+  Japan2 %>%
+    select(name, Type, model, status, Reactor, NetMW, Construction, Operation, Closure)
+
+Japan3 %>%
+  ggplot(aes(x= Construction, y= NetMW, color= Type)) +
+  geom_point()
 
 ```
-
 
 ## Your Turn: Scrape & Clean China Data (then merge with Japan)
 
 ```{r}
 #my code here... 
+
+China <- ListofTables[[10]]
+
+China1 <-
+  China %>%
+  select(1:9) %>%
+  filter(row_number() > 1) %>%
+  rename(name = Plantname, 
+         reactor = `UnitNo.`,
+         model = Model,
+         status = Status, 
+         netMW = `Capacity(MW)`,
+         construction = Beginbuilding,
+         operation = Commercialoperation, 
+         closure = Closed)
+
+China2 <-
+  China1 %>%
+    mutate(Reactor = as.numeric(reactor),
+           NetMW = as.numeric(netMW),
+           Construction = lubridate::dmy(construction),
+           Operation = lubridate::dmy(operation),
+           Closure = lubridate::dmy(closure)
+           )
+
+China3 <-
+  China2 %>%
+    select(name, Type, model, status, Reactor, NetMW, Construction, Operation, Closure)
 
 ```
 
