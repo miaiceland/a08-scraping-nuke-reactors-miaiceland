@@ -8,6 +8,7 @@ output: html_notebook
 library(tidyverse)
 library(rvest)
 library(dplyr)
+library(esquisse)
 
 ```
 
@@ -116,5 +117,9 @@ NewTable <-
 
 ```{r}
 #My code here
+
+Japan %>%
+  ggplot(aes(x = Construction, xend= Operation, y = name, yend= name, color= Type, linetype= status)) +
+  geom_segment()
 
 ```
