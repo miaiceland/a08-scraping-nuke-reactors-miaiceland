@@ -7,6 +7,7 @@ output: html_notebook
 ```{r}
 library(tidyverse)
 library(rvest)
+library(dplyr)
 
 ```
 
@@ -22,7 +23,7 @@ ListofTables <- page %>%
   html_nodes(css = "table") %>%
   html_table(fill = TRUE)
 
-Japan <- ListofTables[[21]]
+Japan1 <- ListofTables[[21]]
 
 ```
 
@@ -37,8 +38,8 @@ The columns which are tidy are "Plantname", "Type", and "Capacity". "Model" and 
 ```{r}
 #my code here 
 
-Japan1 <-
-  Japan %>%
+Japan2 <-
+  Japan1 %>%
   select(1:9) %>%
   filter(row_number() > 1) %>%
   rename(name = Plantname, 
@@ -50,8 +51,8 @@ Japan1 <-
          operation = Commercialoperation, 
          closure = Closed)
 
-Japan2 <-
-  Japan1 %>%
+Japan3 <-
+  Japan2 %>%
     mutate(Reactor = as.numeric(reactor),
            NetMW = as.numeric(netMW),
            Construction = lubridate::dmy(construction),
@@ -59,11 +60,12 @@ Japan2 <-
            Closure = lubridate::dmy(closure)
            )
 
-Japan3 <-
-  Japan2 %>%
-    select(name, Type, model, status, Reactor, NetMW, Construction, Operation, Closure)
+Japan <-
+  Japan3 %>%
+    mutate(Country = "Japan") %>%
+    select(Country, name, Type, model, status, Reactor, NetMW, Construction, Operation, Closure)
 
-Japan3 %>%
+Japan %>%
   ggplot(aes(x= Construction, y= NetMW, color= Type)) +
   geom_point()
 
@@ -74,10 +76,10 @@ Japan3 %>%
 ```{r}
 #my code here... 
 
-China <- ListofTables[[10]]
+China1 <- ListofTables[[10]]
 
-China1 <-
-  China %>%
+China2 <-
+  China1 %>%
   select(1:9) %>%
   filter(row_number() > 1) %>%
   rename(name = Plantname, 
@@ -89,8 +91,8 @@ China1 <-
          operation = Commercialoperation, 
          closure = Closed)
 
-China2 <-
-  China1 %>%
+China3 <-
+  China2 %>%
     mutate(Reactor = as.numeric(reactor),
            NetMW = as.numeric(netMW),
            Construction = lubridate::dmy(construction),
@@ -98,9 +100,13 @@ China2 <-
            Closure = lubridate::dmy(closure)
            )
 
-China3 <-
-  China2 %>%
-    select(name, Type, model, status, Reactor, NetMW, Construction, Operation, Closure)
+China <-
+  China3 %>%
+    mutate(Country = "China") %>%
+    select(Country, name, Type, model, status, Reactor, NetMW, Construction, Operation, Closure)
+
+NewTable <-
+  bind_rows(Japan, China)
 
 ```
 
